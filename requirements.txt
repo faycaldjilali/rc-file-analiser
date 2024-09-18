@@ -3,6 +3,8 @@ cohere
 openpyxl
 python-dotenv
 python-docx
+streamlit
+
 
 
 

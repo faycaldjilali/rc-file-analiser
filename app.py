@@ -5,7 +5,16 @@ import re
 from dotenv import load_dotenv
 import streamlit as st
 import json
-
+import PyPDF2
+from cohere import Client
+import zipfile
+import shutil
+import re
+import csv
+import openpyxl
+from docx import Document
+import json
+import docx
 
 load_dotenv()
 
@@ -244,7 +253,7 @@ def process_all_pdfs_in_folder(folder_path):
             print(f"To-Do list saved to {csv_path}")
 
 
-folder_path =target_directory
+folder_path =rc_file_location
 
 process_all_pdfs_in_folder(folder_path)
 
