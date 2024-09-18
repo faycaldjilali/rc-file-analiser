@@ -1,0 +1,11 @@
+PyPDF2
+cohere
+openpyxl
+python-dotenv
+python-docx
+
+
+
+
+
+
