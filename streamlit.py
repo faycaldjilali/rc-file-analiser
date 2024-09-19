@@ -46,7 +46,6 @@ def extract_zip(zip_path, extract_to):
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
-
 def delete_zip_files(folder_path):
     for root, dirs, files in os.walk(folder_path):
         for file in files:
@@ -107,7 +106,7 @@ if uploaded_file is not None:
     zip_file_path = save_uploaded_file(uploaded_file)
 
     # Extract uploaded ZIP file
-    extract_all_zips_in_directory(zip_file_location, unzip_file_location)
+    extract_zip(zip_file_path, unzip_file_location)
 
     # Delete ZIP files after extraction
     delete_zip_files(unzip_file_location)
@@ -121,12 +120,21 @@ if uploaded_file is not None:
 
     st.success("File processing completed!")
 
-    # Create a zip file for download
-    zip_buffer = create_zip_from_folder(rc_file_location)
+    # Create ZIP files for download
+    unzip_zip_buffer = create_zip_from_folder(unzip_file_location)
+    rc_zip_buffer = create_zip_from_folder(rc_file_location)
+
     st.download_button(
-        label="Download Processed Files",
-        data=zip_buffer,
-        file_name="processed_files.zip",
+        label="Download Unzipped Files",
+        data=unzip_zip_buffer,
+        file_name="unzipped_files.zip",
+        mime="application/zip"
+    )
+
+    st.download_button(
+        label="Download RC Files",
+        data=rc_zip_buffer,
+        file_name="rc_files.zip",
         mime="application/zip"
     )
 else:
