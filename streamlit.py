@@ -46,16 +46,6 @@ def extract_zip(zip_path, extract_to):
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
-def extract_all_zips_in_directory(directory, extract_root):
-    for root, dirs, files in os.walk(directory):
-        for file in files:
-            if file.endswith('.zip'):
-                zip_file_path = os.path.join(root, file)
-                relative_path = os.path.relpath(root, directory)
-                extract_to_folder = os.path.join(extract_root, relative_path, os.path.splitext(file)[0])
-                os.makedirs(extract_to_folder, exist_ok=True)
-                st.write(f"Processing ZIP file: {zip_file_path}")
-                extract_zip(zip_file_path, extract_to_folder)
 
 def delete_zip_files(folder_path):
     for root, dirs, files in os.walk(folder_path):
