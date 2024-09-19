@@ -3,6 +3,7 @@ import zipfile
 import shutil
 import re
 import streamlit as st
+import io
 
 # Streamlit Interface for uploading ZIP files
 st.title("ZIP File Processor")
@@ -99,6 +100,17 @@ def copy_rc_files(source_dir, target_dir):
                 shutil.copy(file_path, destination_file_path)
                 st.write(f"Copied {file_path} to {destination_file_path}")
 
+def create_zip_from_folder(folder_path):
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                arcname = os.path.relpath(file_path, folder_path)
+                zip_file.write(file_path, arcname)
+    buffer.seek(0)
+    return buffer
+
 # Main application logic
 if uploaded_file is not None:
     # Save uploaded ZIP file
@@ -118,5 +130,14 @@ if uploaded_file is not None:
     copy_rc_files(unzip_file_location, rc_file_location)
 
     st.success("File processing completed!")
+
+    # Create a zip file for download
+    zip_buffer = create_zip_from_folder(rc_file_location)
+    st.download_button(
+        label="Download Processed Files",
+        data=zip_buffer,
+        file_name="processed_files.zip",
+        mime="application/zip"
+    )
 else:
     st.info("Please upload a ZIP file to begin processing.")
